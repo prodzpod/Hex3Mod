@@ -42,7 +42,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Utility };
-            item.deprecatedTier = ItemTier.Tier1;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;

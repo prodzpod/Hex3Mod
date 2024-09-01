@@ -34,6 +34,20 @@ namespace Hex3Mod.HelperClasses
             return itemDisplayModel;
         }
 
+        /// <summary>
+        /// Generates an <see="ItemTierDef"> from the specified <paramref name="tier"/>
+        /// You should set <paramref name="canScrap"/> and <paramref name="canRestack"/> to false for consumed items.
+        /// </summary>
+        public static ItemTierDef GenerateItemDef(ItemTier tier, bool canScrap = true, bool canRestack = true) {
+            ItemTierDef itemTierDef = ScriptableObject.CreateInstance<ItemTierDef>(); 
+            itemTierDef.tier = tier;
+            itemTierDef.canScrap = canScrap;
+            // set it so we can be used for shrine of shaping
+            itemTierDef.canRestack = canRestack;
+
+            return itemTierDef;
+        }
+
     }
     public static class UltimateCustomRunCompatibility
     {

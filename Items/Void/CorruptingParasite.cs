@@ -54,7 +54,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist }; // It would be useless on enemies
-            item.deprecatedTier = ItemTier.VoidTier1;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier1);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;
@@ -310,7 +310,7 @@ namespace Hex3Mod.Items
             };
         }
 
-        [RegisterAchievement("CorruptingParasite", "CorruptingParasiteUnlock", null, typeof(CorruptingParasiteAchievement))]
+        [RegisterAchievement("CorruptingParasite", "CorruptingParasiteUnlock", null, 0, typeof(CorruptingParasiteAchievement))]
         public class CorruptingParasiteAchievement : BaseAchievement
         {
             public override void OnInstall()

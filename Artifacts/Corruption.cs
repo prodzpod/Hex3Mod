@@ -1,17 +1,8 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using R2API;
-using R2API.Utils;
+﻿using R2API;
 using RoR2;
-using RoR2.ExpansionManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using Hex3Mod;
-using Hex3Mod.Logging;
 using static Hex3Mod.Main;
+
 namespace Hex3Mod.Artifacts
 {
     public class ArtifactOfCorruption

@@ -48,7 +48,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Healing };
-            item.deprecatedTier = ItemTier.VoidTier3;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier3);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;

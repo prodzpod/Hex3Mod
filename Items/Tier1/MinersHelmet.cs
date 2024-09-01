@@ -55,7 +55,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.BrotherBlacklist, ItemTag.AIBlacklist}; // Useless on monsters
-            item.deprecatedTier = ItemTier.Tier1;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;
@@ -341,7 +341,7 @@ namespace Hex3Mod.Items
             }
         }
 
-        [RegisterAchievement("MinersHelmet", "MinersHelmetUnlock", null, typeof(MinersHelmetAchievement))]
+        [RegisterAchievement("MinersHelmet", "MinersHelmetUnlock", null, 0, typeof(MinersHelmetAchievement))]
         public class MinersHelmetAchievement : BaseAchievement
         {
             public override void OnInstall()

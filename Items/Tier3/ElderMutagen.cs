@@ -50,7 +50,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist};
-            item.deprecatedTier = ItemTier.Tier3;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier3);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;

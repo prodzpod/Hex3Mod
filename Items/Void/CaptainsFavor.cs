@@ -52,7 +52,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
-            item.deprecatedTier = ItemTier.VoidTier1;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier1);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;
@@ -328,6 +328,7 @@ namespace Hex3Mod.Items
                         {
                             ItemTier firstDropTier;
                             PickupIndex[] generatedDrops = self.dropTable.GenerateUniqueDrops(3, self.rng);
+                            // Marked as deprecated but has no PickupCatalog variant :(
                             if (generatedDrops[0].itemIndex != ItemIndex.None && ItemCatalog.GetItemDef(generatedDrops[0].itemIndex).tier != ItemTier.NoTier)
                             {
                                 firstDropTier = ItemCatalog.GetItemDef(generatedDrops[0].itemIndex).tier;

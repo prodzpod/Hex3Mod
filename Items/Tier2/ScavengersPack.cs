@@ -48,7 +48,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.CannotDuplicate };
-            item.deprecatedTier = ItemTier.Tier2;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier2);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;
@@ -68,7 +68,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "CONSUMED_DESC";
 
             item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotDuplicate, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist }; // Need to make sure the item can't be given or cloned
-            item.deprecatedTier = ItemTier.NoTier;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.NoTier, canScrap: false, canRestack: false);
             item.canRemove = false;
             item.hidden = false;
 
@@ -88,7 +88,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "HIDDEN_NAME";
 
             item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotDuplicate, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist }; // Need to make sure the item can't be given or cloned
-            item.deprecatedTier = ItemTier.NoTier;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.NoTier, canScrap: false, canRestack: false);
             item.canRemove = true;
             item.hidden = true;
 

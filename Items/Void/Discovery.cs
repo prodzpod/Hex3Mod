@@ -49,7 +49,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
-            item.deprecatedTier = ItemTier.VoidTier2;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier2);
             item.canRemove = true;
             item.hidden = false;
             item.requiredExpansion = Hex3ModExpansion;
@@ -70,7 +70,7 @@ namespace Hex3Mod.Items
             item.loreToken = "H3_" + upperName + "_LORE";
 
             item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotSteal, ItemTag.CannotDuplicate };
-            item.deprecatedTier = ItemTier.NoTier;
+            item._itemTierDef = helpers.GenerateItemDef(ItemTier.NoTier, canScrap: false, canRestack: false);
             item.canRemove = false;
             item.hidden = true;
 
