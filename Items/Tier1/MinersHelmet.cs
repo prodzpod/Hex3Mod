@@ -341,7 +341,7 @@ namespace Hex3Mod.Items
             }
         }
 
-        [RegisterAchievement("MinersHelmet", "MinersHelmetUnlock", null, 0, typeof(MinersHelmetAchievement))]
+        [RegisterAchievement("MinersHelmet", "MinersHelmetUnlock", null, 3, typeof(MinersHelmetAchievement))]
         public class MinersHelmetAchievement : BaseAchievement
         {
             public override void OnInstall()

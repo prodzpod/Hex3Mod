@@ -455,7 +455,7 @@ namespace Hex3Mod.Items
             ContentAddition.AddBuffDef(ticketStacks);
         }
 
-        [RegisterAchievement("OneTicket", "OneTicketUnlock", null, 0, typeof(OneTicketAchievement))]
+        [RegisterAchievement("OneTicket", "OneTicketUnlock", null, 3, typeof(OneTicketAchievement))]
         public class OneTicketAchievement : BaseAchievement
         {
             public override void OnInstall()

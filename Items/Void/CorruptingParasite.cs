@@ -310,7 +310,7 @@ namespace Hex3Mod.Items
             };
         }
 
-        [RegisterAchievement("CorruptingParasite", "CorruptingParasiteUnlock", null, 0, typeof(CorruptingParasiteAchievement))]
+        [RegisterAchievement("CorruptingParasite", "CorruptingParasiteUnlock", null, 3, typeof(CorruptingParasiteAchievement))]
         public class CorruptingParasiteAchievement : BaseAchievement
         {
             public override void OnInstall()

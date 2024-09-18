@@ -323,7 +323,7 @@ namespace Hex3Mod.Items
             {
                 if (!UltimateCustomRunCompatibility.enabled && !VanillaRebalanceCompatibility.enabled)
                 {
-                    IL.RoR2.HealthComponent.TakeDamage += (il) =>
+                    IL.RoR2.HealthComponent.TakeDamageProcess += (il) =>
                     {
                         ILCursor ilcursor = new(il);
                         if (ilcursor.TryGotoNext(MoveType.Before,
