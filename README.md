@@ -1,3 +1,10 @@
+# !! NOTICE !!
+this mod is a port of [Hex3](https://github.com/hex3gc)'s mod for SotS. I've made this with permission.
+![Permission](https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/perm.png)
+
+---
+<br><br>
+
 # Hex3Mod 2.0
 
 Adds 1 artifact and 25 new items to the game:
@@ -11,38 +18,38 @@ Adds 1 artifact and 25 new items to the game:
 | Icon  | Description | Unlock |
 | ------------- | ------------- | ------------- |
 | | <p align="center">**COMMON**</p> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838891571519548/ATGPrototype.png?raw=true" width=128> | **ATG Prototype**<br>After inflicting **10** hits, fire a missile that deals **80%** <sup>(+80% per stack)</sup> TOTAL damage. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838891810619442/BucketList.png?raw=true" width=128> | **Bucket List**<br>Move **24%** faster <sup>(+24% per stack)</sup>. Reduce this bonus by **80%** during boss fights. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838890950758420/HopooEgg.png?raw=true" width=128> | **Hopoo Egg**<br>Jump **30%** <sup>(+30% per stack)</sup> higher. **Reduces fall damage**. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838988812279849/ShardOfGlass.png?raw=true" width=128> | **Shard Of Glass**<br>Increase your **base damage** by **7%** <sup>(+7% per stack)</sup>. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838987243618364/Tickets.png?raw=true" width=128> | **400 Tickets**<br>The next chest, lunar pod or void cradle you open will contain **double the amount of items**. Consumed on use. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1044935829660905492/Balance.png?raw=true" width=128> | **Balance**<br>Gain a maximum **20% chance to dodge attacks** (+20% per stack, hyperbolic) **the slower you're moving:** **Full chance** while not moving, **half chance** while walking or receiving a speed debuff, and **no chance** while freely sprinting. Unaffected by luck. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1044761356659851274/MinersHelmet.png?raw=true" width=128> | **Miner's Helmet**<br>**Every time you earn $25** <sup>(Scaling with time)</sup>, reduce your **skill cooldowns** by **2** seconds <sup>(+2 per stack)</sup>. | <details><summary>Unlock</summary>Carry enough money to buy 3 legendary chests.</details> |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/ATGPrototype.png" width=128> | **ATG Prototype**<br>After inflicting **10** hits, fire a missile that deals **80%** <sup>(+80% per stack)</sup> TOTAL damage. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/BucketList.png" width=128> | **Bucket List**<br>Move **24%** faster <sup>(+24% per stack)</sup>. Reduce this bonus by **80%** during boss fights. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/HopooEgg.png" width=128> | **Hopoo Egg**<br>Jump **30%** <sup>(+30% per stack)</sup> higher. **Reduces fall damage**. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/ShardOfGlass.png" width=128> | **Shard Of Glass**<br>Increase your **base damage** by **7%** <sup>(+7% per stack)</sup>. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/Tickets.png" width=128> | **400 Tickets**<br>The next chest, lunar pod or void cradle you open will contain **double the amount of items**. Consumed on use. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/Balance.png" width=128> | **Balance**<br>Gain a maximum **20% chance to dodge attacks** (+20% per stack, hyperbolic) **the slower you're moving:** **Full chance** while not moving, **half chance** while walking or receiving a speed debuff, and **no chance** while freely sprinting. Unaffected by luck. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/MinersHelmet.png" width=128> | **Miner's Helmet**<br>**Every time you earn $25** <sup>(Scaling with time)</sup>, reduce your **skill cooldowns** by **2** seconds <sup>(+2 per stack)</sup>. | <details><summary>Unlock</summary>Carry enough money to buy 3 legendary chests.</details> |
 | | <p align="center">**UNCOMMON**</p> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1053878386017185842/Empathy.png?raw=true" width=128> | **Empathy**<br>**When an enemy takes damage within 13m** of you, heal for **3 HP** <sup>(+3 per stack)</sup>. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838988543852634/ScatteredReflection.png?raw=true" width=128> | **Scattered Reflection**<br>**Block and reflect 7% of all received damage** back to your attacker, magnifying it by **700%** <sup>(+700% per stack)</sup>. For every **Shard Of Glass** in your inventory, **reflect 0.7%** <sup>(+0.7% per stack)</sup> **more damage**. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1054188497302454312/ScavengersPack.png?raw=true" width=128> | **Scavenger's Pouch**<br>When an item is **consumed**, **replace it** with a brand new one. This may occur up to **2** times before the pouch is empty. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1043555785277452410/TheUnforgivable.png?raw=true" width=128> | **The Unforgivable**<br>Activate your **on-kill effects** at your location every **10** <sup>(-50% per stack)</sup> seconds. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1047947959779725312/OverkillOverdrive.png?raw=true" width=128> | **Overkill Overdrive**<br>Amplify the radius of your **area buffs** and **holdout zones** by **20%** <sup>(+20% per stack)</sup>. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/Empathy.png" width=128> | **Empathy**<br>**When an enemy takes damage within 13m** of you, heal for **3 HP** <sup>(+3 per stack)</sup>. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/ScatteredReflection.png" width=128> | **Scattered Reflection**<br>**Block and reflect 7% of all received damage** back to your attacker, magnifying it by **700%** <sup>(+700% per stack)</sup>. For every **Shard Of Glass** in your inventory, **reflect 0.7%** <sup>(+0.7% per stack)</sup> **more damage**. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/ScavengersPack.png" width=128> | **Scavenger's Pouch**<br>When an item is **consumed**, **replace it** with a brand new one. This may occur up to **2** times before the pouch is empty. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/TheUnforgivable.png" width=128> | **The Unforgivable**<br>Activate your **on-kill effects** at your location every **10** <sup>(-50% per stack)</sup> seconds. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/OverkillOverdrive.png" width=128> | **Overkill Overdrive**<br>Amplify the radius of your **area buffs** and **holdout zones** by **20%** <sup>(+20% per stack)</sup>. |
 | | <p align="center">**LEGENDARY**</p> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1087738209636732999/Apathy.png?raw=true" width=128> | **Apathy**<br>**When an enemy dies within 13m** of you, gain a stack of **Apathy**. After reaching **10** stacks, **enter a frenzy** which grants you **+100% movement speed**, **attack speed** and **20 hp/s of regeneration** for **7.5 seconds** <sup>(+7.5s per stack)</sup>. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838987465900052/MintCondition.png?raw=true" width=128> | **Mint Condition**<br>**Provides immunity to movement restricting status effects**. Gain **20%** movement speed <sup>(+60% per stack)</sup> and **1** <sup>(+2 per stack)</sup> extra jumps. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1054188496866254868/Mutagen.png?raw=true" width=128> | **Elder Mutagen**<br>**Killing a new monster species** grants a permanent **10 max health** and **0.5 HP per second** regeneration bonus. Each stack allows you to gain this bonus **1** more time from all species. |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1012988941437259796/DoNotEatPost.png?raw=true" width=128> | **Do Not Eat**<br>Chests and shop terminals have a **10%** <sup>(+10% per stack)</sup> chance to also contain a **Pearl** or an **Irradiant Pearl**. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/Apathy.png" width=128> | **Apathy**<br>**When an enemy dies within 13m** of you, gain a stack of **Apathy**. After reaching **10** stacks, **enter a frenzy** which grants you **+100% movement speed**, **attack speed** and **20 hp/s of regeneration** for **7.5 seconds** <sup>(+7.5s per stack)</sup>. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/MintCondition.png" width=128> | **Mint Condition**<br>**Provides immunity to movement restricting status effects**. Gain **20%** movement speed <sup>(+60% per stack)</sup> and **1** <sup>(+2 per stack)</sup> extra jumps. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/Mutagen.png" width=128> | **Elder Mutagen**<br>**Killing a new monster species** grants a permanent **10 max health** and **0.5 HP per second** regeneration bonus. Each stack allows you to gain this bonus **1** more time from all species. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/DoNotEatPost.png" width=128> | **Do Not Eat**<br>Chests and shop terminals have a **10%** <sup>(+10% per stack)</sup> chance to also contain a **Pearl** or an **Irradiant Pearl**. |
 | | <p align="center">**VOID**</p> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838988271198279/Parasite.png?raw=true" width=128> | **Corrupting Parasite**<br>At the start of each stage, **1 random item will be corrupted into its void equivalent** <sup>(+1 per stack)</sup>. | <details><summary>Unlock</summary>Enter the Deep Void.</details> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838987939840060/NoticeOfAbsence.png?raw=true" width=128> | **Notice Of Absence**<br>**Become invisible for 10 seconds** <sup>(+5 per stack)</sup> whenever a boss spawns or a teleporter event begins. **Corrupts all Bucket Lists.**|
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838890485198848/DropOfNecrosis.png?raw=true" width=128> | **Drop Of Necrosis**<br>Your attacks have a **5%** <sup>(+5% per stack)</sup> chance to inflict **Blight**, which deals **5%** more damage for each stack of this item. **Corrupts all Shards Of Glass.**|
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1048610656749899796/CaptainsFavor.png?raw=true" width=128> | **Captain's Favor**<br>The first <sup>(+1 per stack)</sup> chest you open each stage will instead drop a **Void Potential**, inheriting the tier of the item it replaced. **Corrupts all 400 Tickets.** |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838890262904832/Discovery.png?raw=true" width=128> | **Discovery**<br>Using a world interactable grants **3** points of permanent **regenerating shield** to everyone on your team. Caps at **300 shield** per stack. **Corrupts all Infusions.**|
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838986677354506/SpatteredCollection.png?raw=true" width=128> | **Spattered Collection**<br>Your attacks have a **10%** chance to inflict **Blight**, which now **reduces enemies' armor by 2** <sup>(+2 per stack)</sup> for each stack. **Corrupts all Scattered Reflections.**|
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838986941616138/TheHermit.png?raw=true" width=128> | **The Hermit**<br>Taking damage grants a **stacking damage resistance of 5%** that lasts for **10 seconds** <sup>(+5 per stack)</sup>. **Corrupts all Symbiotic Scorpions.**|
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/Parasite.png" width=128> | **Corrupting Parasite**<br>At the start of each stage, **1 random item will be corrupted into its void equivalent** <sup>(+1 per stack)</sup>. | <details><summary>Unlock</summary>Enter the Deep Void.</details> |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/NoticeOfAbsence.png" width=128> | **Notice Of Absence**<br>**Become invisible for 10 seconds** <sup>(+5 per stack)</sup> whenever a boss spawns or a teleporter event begins. **Corrupts all Bucket Lists.**|
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/DropOfNecrosis.png" width=128> | **Drop Of Necrosis**<br>Your attacks have a **5%** <sup>(+5% per stack)</sup> chance to inflict **Blight**, which deals **5%** more damage for each stack of this item. **Corrupts all Shards Of Glass.**|
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/CaptainsFavor.png" width=128> | **Captain's Favor**<br>The first <sup>(+1 per stack)</sup> chest you open each stage will instead drop a **Void Potential**, inheriting the tier of the item it replaced. **Corrupts all 400 Tickets.** |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/Discovery.png" width=128> | **Discovery**<br>Using a world interactable grants **3** points of permanent **regenerating shield** to everyone on your team. Caps at **300 shield** per stack. **Corrupts all Infusions.**|
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/SpatteredCollection.png" width=128> | **Spattered Collection**<br>Your attacks have a **10%** chance to inflict **Blight**, which now **reduces enemies' armor by 2** <sup>(+2 per stack)</sup> for each stack. **Corrupts all Scattered Reflections.**|
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/TheHermit.png" width=128> | **The Hermit**<br>Taking damage grants a **stacking damage resistance of 5%** that lasts for **10 seconds** <sup>(+5 per stack)</sup>. **Corrupts all Symbiotic Scorpions.**|
 | | <p align="center">**LUNAR**</p> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1043555784782528542/OneTicket.png?raw=true" width=128> | **One Ticket**<br>This ticket grants **legendary items** when deposited into a **cleansing pool**: One <sup>(+1 per stack)</sup> for each stage cleared while holding it. **ALL enemies spawn as Perfected Elites while it is in your inventory, and each stack makes them stronger.** | <details><summary>Unlock</summary>Use 400 Tickets to duplicate the contents of a Scavenger's bag.</details> |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/OneTicket.png" width=128> | **One Ticket**<br>This ticket grants **legendary items** when deposited into a **cleansing pool**: One <sup>(+1 per stack)</sup> for each stage cleared while holding it. **ALL enemies spawn as Perfected Elites while it is in your inventory, and each stack makes them stronger.** | <details><summary>Unlock</summary>Use 400 Tickets to duplicate the contents of a Scavenger's bag.</details> |
 | | <p align="center">**LUNAR EQUIPMENT**</p> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/1048610593445265438/BloodOfTheLamb.png?raw=true" width=128> | **Blood Of The Lamb**<br>Purge **6** of your items for a random **boss item.** Any item except **Lunar**, **Tierless**, or **Boss** items may be purged. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/BloodOfTheLamb.png" width=128> | **Blood Of The Lamb**<br>Purge **6** of your items for a random **boss item.** Any item except **Lunar**, **Tierless**, or **Boss** items may be purged. |
 | | <p align="center">**ARTIFACTS**</p> |
-| <img src="https://cdn.discordapp.com/attachments/980836743894941696/980838891345047562/ArtifactOfCorruption_On.png?raw=true" width=128> | **Artifact Of Bugs**<br>Gives you one **Corrupting Parasite** each stage. |
+| <img src="https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/ArtifactOfCorruption_On.png" width=128> | **Artifact Of Bugs**<br>Gives you one **Corrupting Parasite** each stage. |
 
 Each item has a unique effect and configurable values. Special thanks to the RoR2 Modding Discord for teaching me how to do this, and for providing enough feedback on the mod to get it to this point.
 
@@ -55,6 +62,9 @@ KNOWN ISSUES:
 Please give feedback/bug reports on the RoR2 Modding discord, or by messaging directly: hex3#7952
 
 # Changelog
+
+### 2.1.1
+made it work for sots
 
 ### 2.1.0 - For balance changes to take effect, delete your config file. This will be done automatically in the future.
 A 3.0 update is in the future with new items, but first I want to focus on getting everything in working condition, and making it all look good.
