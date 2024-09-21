@@ -21,7 +21,8 @@ namespace Hex3Mod.Items
         static string upperName = itemName.ToUpper();
         public static ItemDef itemDef;
         static ItemDef consumedItemDef;
-        static List<string> blacklist = new();
+        private static readonly List<string> list = [];
+        static List<string> blacklist = list;
         public static GameObject LoadPrefab()
         {
             GameObject pickupModelPrefab = MainAssets.LoadAsset<GameObject>("Assets/Models/Prefabs/TicketsPrefab.prefab");
@@ -52,7 +53,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CannotDuplicate };
+            item.tags = [ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CannotDuplicate];
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
@@ -72,7 +73,7 @@ namespace Hex3Mod.Items
             item.pickupToken = "H3_" + upperName + "CONSUMED_PICKUP";
             item.descriptionToken = "H3_" + upperName + "CONSUMED_DESC";
 
-            item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotDuplicate , ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
+            item.tags = [ItemTag.CannotCopy, ItemTag.CannotDuplicate , ItemTag.AIBlacklist, ItemTag.BrotherBlacklist];
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.NoTier, canScrap: false, canRestack: false);
             item.canRemove = false;
             item.hidden = false;
@@ -88,7 +89,7 @@ namespace Hex3Mod.Items
             GameObject ItemDisplayPrefab = helpers.PrepareItemDisplayModel(PrefabAPI.InstantiateClone(LoadPrefab(), LoadPrefab().name + "Display", false));
 
             ItemDisplayRuleDict rules = new ItemDisplayRuleDict();
-            rules.Add("mdlCommandoDualies", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlCommandoDualies", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "CalfL",
@@ -96,9 +97,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(15.07626F, 184.3583F, 246.3487F),
                         localScale = new Vector3(0.37297F, 0.34407F, 0.34949F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlHuntress", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlHuntress", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "HeadCenter",
@@ -106,9 +107,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(22.7539F, 112.5206F, 30.06874F),
                         localScale = new Vector3(0.3862F, 0.3862F, 0.3862F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlToolbot", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlToolbot", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "LowerArmL",
@@ -116,9 +117,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(358.7048F, 106.5688F, 270.3022F),
                         localScale = new Vector3(2.94697F, 2.94697F, 2.94697F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlEngi", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlEngi", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "Stomach",
@@ -126,9 +127,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(350.3929F, 247.1018F, 264.1864F),
                         localScale = new Vector3(0.62793F, 0.62793F, 0.62793F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlMage", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlMage", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "Chest",
@@ -136,9 +137,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(347.4555F, 280.9578F, 297.396F),
                         localScale = new Vector3(-0.43104F, 0.42094F, 0.35703F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlMerc", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlMerc", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "HandL",
@@ -146,9 +147,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(49.75164F, 1.50993F, 181.2459F),
                         localScale = new Vector3(-0.25159F, 0.27408F, 0.2336F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlTreebot", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlTreebot", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "CalfBackR",
@@ -156,9 +157,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(8.24625F, 100.2931F, 272.7766F),
                         localScale = new Vector3(-0.64708F, 0.7225F, 0.7225F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlLoader", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlLoader", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "Chest",
@@ -166,9 +167,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(0F, 0F, 0F),
                         localScale = new Vector3(0.33674F, 0.33674F, 0.33674F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlCroco", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlCroco", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "HandL",
@@ -176,9 +177,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(357.1312F, 12.39285F, 124.7832F),
                         localScale = new Vector3(3.67553F, 3.67553F, 3.67553F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlCaptain", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlCaptain", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "HandL",
@@ -186,9 +187,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(8.12018F, 300.2912F, 97.09362F),
                         localScale = new Vector3(0.34931F, 0.34931F, 0.34931F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlBandit2", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlBandit2", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "Hat",
@@ -196,9 +197,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(8.61942F, 231.3094F, 282.6341F),
                         localScale = new Vector3(0.52385F, 0.52385F, 0.52385F)
                     }
-                }
+                ]
             );
-            rules.Add("EngiTurretBody", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("EngiTurretBody", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "LegBar2",
@@ -206,9 +207,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(354.0227F, 92.69547F, 87.36358F),
                         localScale = new Vector3(1.14751F, 1.14751F, 1.14751F)
                     }
-                }
+                ]
             );
-            rules.Add("EngiWalkerTurretBody", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("EngiWalkerTurretBody", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "LegBar2",
@@ -216,9 +217,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(2.86457F, 92.27133F, 149.7901F),
                         localScale = new Vector3(1.25716F, 1.25716F, 1.25716F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlScav", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlScav", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "Backpack",
@@ -226,9 +227,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(345.0512F, 210.8083F, 4.95444F),
                         localScale = new Vector3(15.02295F, 15.02295F, 15.02295F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlRailGunner", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlRailGunner", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "ThighR",
@@ -236,9 +237,9 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(343.7317F, 15.11429F, 272.6107F),
                         localScale = new Vector3(0.52614F, 0.52614F, 0.52614F)
                     }
-                }
+                ]
             );
-            rules.Add("mdlVoidSurvivor", new ItemDisplayRule[]{new ItemDisplayRule{
+            rules.Add("mdlVoidSurvivor", [new ItemDisplayRule{
                         ruleType = ItemDisplayRuleType.ParentedPrefab,
                         followerPrefab = ItemDisplayPrefab,
                         childName = "UpperArmR",
@@ -246,7 +247,7 @@ namespace Hex3Mod.Items
                         localAngles = new Vector3(327.629F, 11.98644F, 134.3462F),
                         localScale = new Vector3(0.57511F, 0.57511F, 0.57511F)
                     }
-                }
+                ]
             );
 
             return rules;
@@ -317,13 +318,17 @@ namespace Hex3Mod.Items
                     foreach (TicketsBehavior behavior in Object.FindObjectsOfType<TicketsBehavior>())
                     {
                         if (behavior && behavior.interaction && behavior.interaction == self.gameObject.GetComponent<PurchaseInteraction>())
-                        {
-                            if (self.gameObject.name.Contains("VoidChest"))
+                        {   
+                            var toRun = self.dropCount;
+                            for (int i = 0; i < toRun; i++)
                             {
-                                self.dropUpVelocityStrength = 10f;
-                                self.dropForwardVelocityStrength = 20f;
+                                if (self.gameObject.name.Contains("VoidChest"))
+                                {
+                                    self.dropUpVelocityStrength = 10f;
+                                    self.dropForwardVelocityStrength = 20f;
+                                }
+                                self.dropCount++;
                             }
-                            self.dropCount++;
                             behavior.item = itemDef;
                             behavior.consumedItem = consumedItemDef;
                             behavior.interaction = null;

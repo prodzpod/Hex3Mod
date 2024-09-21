@@ -1,6 +1,6 @@
 # !! NOTICE !!
 this mod is a port of [Hex3](https://github.com/hex3gc)'s mod for SotS. I've made this with permission.
-![Permission](https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/perm.png)
+![Permission](https://raw.githubusercontent.com/prodzpod/Hex3Mod/master/perm.PNG)
 
 ---
 <br><br>
@@ -62,6 +62,12 @@ KNOWN ISSUES:
 Please give feedback/bug reports on the RoR2 Modding discord, or by messaging directly: hex3#7952
 
 # Changelog
+
+### 2.1.5
+400 tickets / captain's favor works with sale star now
+
+### 2.1.2 ~ 2.1.4
+dw about it
 
 ### 2.1.1
 made it work for sots
