@@ -4,7 +4,6 @@ using RoR2.ExpansionManagement;
 using System.Linq;
 using System;
 using UnityEngine;
-using VoidItemAPI;
 using Hex3Mod.HelperClasses;
 using Hex3Mod.Utils;
 using static Hex3Mod.Main;
@@ -275,7 +274,7 @@ namespace Hex3Mod.Items
         private static void AddHooks() // Insert hooks here
         {
             // Void transformation
-            VoidTransformation.CreateTransformation(itemDef, "PermanentDebuffOnHit");
+            VoidTransformation.Add(itemDef, "PermanentDebuffOnHit");
 
             void HealthComponent_TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
             {

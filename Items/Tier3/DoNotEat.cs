@@ -4,7 +4,6 @@ using RoR2.ExpansionManagement;
 using System.Linq;
 using UnityEngine;
 using Hex3Mod.HelperClasses;
-using VoidItemAPI;
 using UnityEngine.Networking;
 using System;
 using Hex3Mod.Utils;

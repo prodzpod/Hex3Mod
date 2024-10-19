@@ -4,7 +4,6 @@ using RoR2.ExpansionManagement;
 using System.Linq;
 using UnityEngine;
 using Hex3Mod.HelperClasses;
-using VoidItemAPI;
 using Hex3Mod.Utils;
 using static Hex3Mod.Main;
 
@@ -247,7 +246,7 @@ namespace Hex3Mod.Items
         private static void AddHooks()
         {
             // Void transformation
-            VoidTransformation.CreateTransformation(itemDef, "BucketList");
+            VoidTransformation.Add(itemDef, "BucketList");
 
             void cloakAllItemOwners()
             {

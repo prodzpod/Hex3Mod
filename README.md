@@ -63,6 +63,9 @@ Please give feedback/bug reports on the RoR2 Modding discord, or by messaging di
 
 # Changelog
 
+### 2.1.6
+killed void api
+
 ### 2.1.5
 400 tickets / captain's favor works with sale star now
 

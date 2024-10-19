@@ -3,7 +3,6 @@ using RoR2;
 using RoR2.ExpansionManagement;
 using UnityEngine;
 using Hex3Mod.HelperClasses;
-using VoidItemAPI;
 using Hex3Mod.Utils;
 using static Hex3Mod.Main;
 using System.Linq;
@@ -269,7 +268,7 @@ namespace Hex3Mod.Items
             ];
 
             // Void transformation
-            VoidTransformation.CreateTransformation(itemDef, "FourHundredTickets");
+            VoidTransformation.Add(itemDef, "FourHundredTickets");
 
             // Give item holders an ItemBehavior
             void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
@@ -332,8 +331,9 @@ namespace Hex3Mod.Items
                             {
                                 PickupIndex[] generatedDrops = self.dropTable.GenerateUniqueDrops(3, self.rng);
                                 // Marked as deprecated but has no PickupCatalog variant :(
-                                if (generatedDrops[0].itemIndex != ItemIndex.None && ItemCatalog.GetItemDef(generatedDrops[0].itemIndex).tier != ItemTier.NoTier) 
-                                    firstDropTier = ItemCatalog.GetItemDef(generatedDrops[0].itemIndex).tier;
+                                var def = PickupCatalog.GetPickupDef(generatedDrops[0]);
+                                if (def.itemIndex != ItemIndex.None && ItemCatalog.GetItemDef(def.itemIndex).tier != ItemTier.NoTier) 
+                                    firstDropTier = ItemCatalog.GetItemDef(def.itemIndex).tier;
                                 else firstDropTier = ItemTier.Tier1;
                                 PickupDropletController.CreatePickupDroplet(new GenericPickupController.CreatePickupInfo
                                 {

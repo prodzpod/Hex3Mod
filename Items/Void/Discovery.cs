@@ -4,7 +4,6 @@ using RoR2.ExpansionManagement;
 using System.Linq;
 using UnityEngine;
 using Hex3Mod.HelperClasses;
-using VoidItemAPI;
 using Hex3Mod.Utils;
 using static Hex3Mod.Main;
 using System;
@@ -292,7 +291,7 @@ namespace Hex3Mod.Items
             };
 
             // Void transformation
-            VoidTransformation.CreateTransformation(itemDef, "Infusion");
+            VoidTransformation.Add(itemDef, "Infusion");
 
             void DiscoveryInteract(Interactor activator)
             {
