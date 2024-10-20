@@ -63,6 +63,9 @@ Please give feedback/bug reports on the RoR2 Modding discord, or by messaging di
 
 # Changelog
 
+### 2.1.7
+doesnt crash if you config badly
+
 ### 2.1.6
 killed void api
 

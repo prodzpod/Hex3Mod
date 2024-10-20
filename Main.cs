@@ -41,7 +41,7 @@ namespace Hex3Mod
     {
         public const string ModGuid = "com.Hex3.Hex3Mod";
         public const string ModName = "Hex3Mod";
-        public const string ModVer = "2.1.0";
+        public const string ModVer = "2.1.7";
 
         public static RoR2.ExpansionManagement.ExpansionDef Hex3ModExpansion;
 
@@ -548,7 +548,7 @@ namespace Hex3Mod
                 ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem] =
                 [
                     .. ItemCatalog.itemRelationships[DLC1Content.ItemRelationshipTypes.ContagiousItem], 
-                    .. VoidTransformation.Select(x => new ItemDef.Pair() 
+                    .. VoidTransformation.Where(x => ItemCatalog.FindItemIndex(x.Value) != ItemIndex.None).Select(x => new ItemDef.Pair() 
                     { 
                         itemDef2 = x.Key, 
                         itemDef1 = ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex(x.Value)) 
