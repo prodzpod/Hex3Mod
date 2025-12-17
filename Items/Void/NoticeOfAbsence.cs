@@ -41,7 +41,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier1);
             item.canRemove = true;
             item.hidden = false;
@@ -252,9 +252,9 @@ namespace Hex3Mod.Items
             {
                 foreach (TeamComponent ally in TeamComponent.GetTeamMembers(TeamIndex.Player))
                 {
-                    if (ally.body && ally.body.inventory && ally.body.inventory.GetItemCount(itemDef) > 0)
+                    if (ally.body && ally.body.inventory && ally.body.inventory.GetItemCountEffective(itemDef) > 0)
                     {
-                        ally.body.AddTimedBuff(RoR2Content.Buffs.Cloak, NoticeOfAbsence_InvisibilityBuff.Value + ((ally.body.inventory.GetItemCount(itemDef) - 1) * NoticeOfAbsence_InvisibilityBuffStack.Value));
+                        ally.body.AddTimedBuff(RoR2Content.Buffs.Cloak, NoticeOfAbsence_InvisibilityBuff.Value + ((ally.body.inventory.GetItemCountEffective(itemDef) - 1) * NoticeOfAbsence_InvisibilityBuffStack.Value));
                     }
                 }
             }

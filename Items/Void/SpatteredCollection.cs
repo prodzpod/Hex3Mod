@@ -42,7 +42,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Damage };
+            item.tags = new ItemTag[]{ ItemTag.Damage, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier2);
             item.canRemove = true;
             item.hidden = false;
@@ -274,13 +274,13 @@ namespace Hex3Mod.Items
 
             On.RoR2.GlobalEventManager.OnHitEnemy += (orig, self, damageInfo, victim) =>
             {
-                if (damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody body1) && body1.inventory && body1.inventory.GetItemCount(itemDef) > 0)
+                if (damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody body1) && body1.inventory && body1.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     if (body1.master && damageInfo.dotIndex != DotController.DotIndex.Blight && damageInfo.attacker != victim)
                     {
                         if (damageInfo.damageType != DamageType.DoT && damageInfo.damageType != DamageType.FallDamage && damageInfo.damage > 0f)
                         {
-                            if (Util.CheckRoll((SpatteredCollection_DotChance.Value * body1.inventory.GetItemCount(itemDef)) * damageInfo.procCoefficient, body1.master.luck))
+                            if (Util.CheckRoll((SpatteredCollection_DotChance.Value * body1.inventory.GetItemCountEffective(itemDef)) * damageInfo.procCoefficient, body1.master.luck))
                             {
                                 InflictDotInfo inflictDotInfo = new InflictDotInfo
                                 {

@@ -53,7 +53,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = [ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CannotDuplicate];
+            item.tags = [ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CannotDuplicate, ItemTag.CanBeTemporary];
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
@@ -293,7 +293,7 @@ namespace Hex3Mod.Items
             void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
             {
                 orig(self);
-                if (self.inventory && self.inventory.GetItemCount(itemDef) > 0 && !self.GetComponent<TicketsBehavior>())
+                if (self.inventory && self.inventory.GetItemCountEffective(itemDef) > 0 && !self.GetComponent<TicketsBehavior>())
                 {
                     self.AddItemBehavior<TicketsBehavior>(1);
                 }
@@ -302,7 +302,7 @@ namespace Hex3Mod.Items
             // Purchases mark the chest as ticketed, and also makes sure the purchaser has an itembehavior
             void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
             {
-                if (activator.TryGetComponent(out CharacterBody body) && body.inventory && body.inventory.GetItemCount(itemDef) > 0 && !blacklist.Exists(x => self.name.Contains(x)) && (!self.isShrine || (Tickets_Pool.Value && self.name.Contains("ShrineCleanse"))))
+                if (activator.TryGetComponent(out CharacterBody body) && body.inventory && body.inventory.GetItemCountEffective(itemDef) > 0 && !blacklist.Exists(x => self.name.Contains(x)) && (!self.isShrine || (Tickets_Pool.Value && self.name.Contains("ShrineCleanse"))))
                 {
                     if (!body.GetComponent<TicketsBehavior>()) body.AddItemBehavior<TicketsBehavior>(1);
                     body.GetComponent<TicketsBehavior>().interaction = self;
@@ -341,7 +341,7 @@ namespace Hex3Mod.Items
 
             void OptionChestBehaviour_ItemDrop(On.RoR2.OptionChestBehavior.orig_ItemDrop orig, OptionChestBehavior self)
             {
-                if (self.generatedDrops != null && self.generatedDrops.Length != 0 && self.gameObject.GetComponent<PurchaseInteraction>())
+                if (self.generatedPickups != null && self.generatedPickups.Count != 0 && self.gameObject.GetComponent<PurchaseInteraction>())
                 {
                     foreach (TicketsBehavior behavior in Object.FindObjectsOfType<TicketsBehavior>())
                     {
@@ -374,7 +374,7 @@ namespace Hex3Mod.Items
                     behavior.interaction = null;
                     behavior.ExchangeTickets();
                     Vector3 v = self.transform.TransformVector(self.dropVelocity);
-                    PickupDropletController.CreatePickupDroplet(self.pickupIndex, (self.dropTransform ?? self.transform).position, new Vector3(-v.x, v.y, -v.z));
+                    PickupDropletController.CreatePickupDroplet(self.pickupDisplay.pickupState.pickupIndex, (self.dropTransform ?? self.transform).position, new Vector3(-v.x, v.y, -v.z));
                 }
                 orig(self);
             }
@@ -396,11 +396,23 @@ namespace Hex3Mod.Items
             {
                 if (body.inventory && body.master)
                 {
-                    body.inventory.RemoveItem(item);
-                    body.inventory.GiveItem(consumedItem);
+                    //body.inventory.RemoveItem(item);
+                    //body.inventory.GiveItem(consumedItem);
+                    Inventory inventory = body.inventory;
+
+                    Inventory.ItemTransformation itemTransformation = new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = item.itemIndex,
+                        newItemIndex = consumedItem.itemIndex
+                    };
+
+                    if (itemTransformation.TryTake(inventory, out Inventory.ItemTransformation.TakeResult takeResult))
+                    {
+                        takeResult.GiveTakenItem(inventory, itemTransformation.newItemIndex);
+                    }
                     CharacterMasterNotificationQueue.SendTransformNotification(body.master, item.itemIndex, consumedItem.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
                     Util.PlaySound(RouletteChestController.Opening.soundEntryEvent, body.gameObject);
-                    if (body.inventory.GetItemCount(item) <= 0)
+                    if (body.inventory.GetItemCountEffective(item) <= 0)
                     {
                         Destroy(this);
                     }

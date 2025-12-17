@@ -39,7 +39,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
@@ -245,7 +245,7 @@ namespace Hex3Mod.Items
         {
             void CheckForBosses(CharacterBody body, RecalculateStatsAPI.StatHookEventArgs args)
             {
-                if (body.inventory && body.inventory.GetItemCount(itemDef) > 0)
+                if (body.inventory && body.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     float ReducedBuff = BucketList_FullBuff.Value * (1f - BucketList_BuffReduce.Value);
                     var monsters = TeamComponent.GetTeamMembers(TeamIndex.Monster);
@@ -262,11 +262,11 @@ namespace Hex3Mod.Items
                         }
                         if (bossFound) // Boss present: Reduced buff
                         {
-                            args.moveSpeedMultAdd += (ReducedBuff + ((body.inventory.GetItemCount(itemDef) - 1) * ReducedBuff));
+                            args.moveSpeedMultAdd += (ReducedBuff + ((body.inventory.GetItemCountEffective(itemDef) - 1) * ReducedBuff));
                         }
                         else // Boss not present: Full buff
                         {
-                            args.moveSpeedMultAdd += (BucketList_FullBuff.Value + ((body.inventory.GetItemCount(itemDef) - 1) * BucketList_FullBuff.Value));
+                            args.moveSpeedMultAdd += (BucketList_FullBuff.Value + ((body.inventory.GetItemCountEffective(itemDef) - 1) * BucketList_FullBuff.Value));
                         }
                     }
                 }

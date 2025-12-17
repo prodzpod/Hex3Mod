@@ -298,16 +298,16 @@ namespace Hex3Mod.Items
                 CharacterBody body = activator.GetComponent<CharacterBody>();
                 if (body && body.inventory)
                 {
-                    int itemCount = body.inventory.GetItemCount(itemDef);
+                    int itemCount = body.inventory.GetItemCountPermanent(itemDef);
                     if (itemCount > 0)
                     {
                         Util.PlaySound(EntityStates.VoidJailer.Weapon.ChargeFire.attackSoundEffect, activator.gameObject);
 
                         foreach (var member in TeamComponent.GetTeamMembers(body.teamComponent.teamIndex))
                         {
-                            if (member.body && member.body.inventory && member.body.inventory.GetItemCount(hiddenItemDef) < Discovery_MaxStacks.Value * Util.GetItemCountForTeam(body.teamComponent.teamIndex, itemDef.itemIndex, true))
+                            if (member.body && member.body.inventory && member.body.inventory.GetItemCountPermanent(hiddenItemDef) < Discovery_MaxStacks.Value * Util.GetItemCountForTeam(body.teamComponent.teamIndex, itemDef.itemIndex, true))
                             {
-                                member.body.inventory.GiveItem(hiddenItemDef);
+                                member.body.inventory.GiveItemPermanent(hiddenItemDef);
                                 EffectData effectDataDist = new EffectData
                                 {
                                     origin = member.body.corePosition
@@ -340,9 +340,9 @@ namespace Hex3Mod.Items
 
             void RecalculateStats(CharacterBody body, RecalculateStatsAPI.StatHookEventArgs args)
             {
-                if (body && body.inventory && body.inventory.GetItemCount(hiddenItemDef) > 0)
+                if (body && body.inventory && body.inventory.GetItemCountPermanent(hiddenItemDef) > 0)
                 {
-                    int hiddenItemCount = body.inventory.GetItemCount(hiddenItemDef);
+                    int hiddenItemCount = body.inventory.GetItemCountPermanent(hiddenItemDef);
                     if (hiddenItemCount > 0)
                     {
                         args.baseShieldAdd += Discovery_ShieldAdd.Value * hiddenItemCount;

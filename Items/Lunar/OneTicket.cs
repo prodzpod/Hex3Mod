@@ -326,23 +326,23 @@ namespace Hex3Mod.Items
             void CharacterMaster_OnServerStageBegin(On.RoR2.CharacterMaster.orig_OnServerStageBegin orig, CharacterMaster self, Stage stage)
             {
                 orig(self, stage);
-                if (stage.sceneDef && stage.sceneDef.sceneType == SceneType.Stage && self.inventory && self.inventory.GetItemCount(itemDef) > 0)
+                if (stage.sceneDef && stage.sceneDef.sceneType == SceneType.Stage && self.inventory && self.inventory.GetItemCountPermanent(itemDef) > 0)
                 {
-                    self.inventory.GiveItem(hiddenItemDef, self.inventory.GetItemCount(itemDef));
+                    self.inventory.GiveItemPermanent(hiddenItemDef, self.inventory.GetItemCountPermanent(itemDef));
                 }
             }
 
             // Set One Ticket buffs and buff enemy stats
             void GetStatCoefficients(CharacterBody body, RecalculateStatsAPI.StatHookEventArgs args)
             {
-                if (body.inventory && body.inventory.GetItemCount(itemDef) > 0)
+                if (body.inventory && body.inventory.GetItemCountPermanent(itemDef) > 0)
                 {
-                    if (body.inventory.GetItemCount(hiddenItemDef) > 0)
+                    if (body.inventory.GetItemCountPermanent(hiddenItemDef) > 0)
                     {
-                        body.SetBuffCount(ticketStacks.buffIndex, body.inventory.GetItemCount(hiddenItemDef));
+                        body.SetBuffCount(ticketStacks.buffIndex, body.inventory.GetItemCountPermanent(hiddenItemDef));
                     }
                 }
-                if (body.inventory && body.inventory.GetItemCount(itemDef) <= 0 && body.GetBuffCount(ticketStacks.buffIndex) > 0)
+                if (body.inventory && body.inventory.GetItemCountPermanent(itemDef) <= 0 && body.GetBuffCount(ticketStacks.buffIndex) > 0)
                 {
                     body.SetBuffCount(ticketStacks.buffIndex, 0);
                 }
@@ -358,10 +358,10 @@ namespace Hex3Mod.Items
             // If One Ticket is present while activating with Cleansing Pool, run a special method
             void PurchaseInteraction_OnInteractionBegin(On.RoR2.PurchaseInteraction.orig_OnInteractionBegin orig, PurchaseInteraction self, Interactor activator)
             {
-                if (self.costType == CostTypeIndex.LunarItemOrEquipment && activator.TryGetComponent(out CharacterBody body) && body.inventory && body.inventory.GetItemCount(itemDef) > 0 && body.master)
+                if (self.costType == CostTypeIndex.LunarItemOrEquipment && activator.TryGetComponent(out CharacterBody body) && body.inventory && body.inventory.GetItemCountPermanent(itemDef) > 0 && body.master)
                 {
                     Inventory inventory = body.inventory;
-                    if (inventory.GetItemCount(hiddenItemDef) <= 0)
+                    if (inventory.GetItemCountPermanent(hiddenItemDef) <= 0)
                     {
                         orig(self, activator);
                     }
@@ -375,7 +375,7 @@ namespace Hex3Mod.Items
                         listOfLegendaries = Run.instance.availableTier3DropList;
 
                         // Get a list of legendaries to drop
-                        for (int i = 0; i < body.inventory.GetItemCount(hiddenItemDef) * body.inventory.GetItemCount(itemDef); i++)
+                        for (int i = 0; i < body.inventory.GetItemCountPermanent(hiddenItemDef) * body.inventory.GetItemCountPermanent(itemDef); i++)
                         {
                             rng.Next();
                             Util.ShuffleList(listOfLegendaries, rng);
@@ -394,11 +394,11 @@ namespace Hex3Mod.Items
                         }
 
                         // Remove all ticket-related items
-                        inventory.RemoveItem(itemDef, inventory.GetItemCount(itemDef));
-                        inventory.RemoveItem(hiddenItemDef, inventory.GetItemCount(hiddenItemDef));
+                        inventory.RemoveItemPermanent(itemDef, inventory.GetItemCountPermanent(itemDef));
+                        inventory.RemoveItemPermanent(hiddenItemDef, inventory.GetItemCountPermanent(hiddenItemDef));
                         CharacterMasterNotificationQueue.SendTransformNotification(body.master, itemDef.itemIndex, consumedItemDef.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
                         PurchaseInteraction.CreateItemTakenOrb(body.corePosition, self.gameObject, itemDef.itemIndex);
-                        inventory.GiveItem(consumedItemDef);
+                        inventory.GiveItemPermanent(consumedItemDef);
                         body.SetBuffCount(ticketStacks.buffIndex, 0);
                     }
                 }
@@ -428,7 +428,7 @@ namespace Hex3Mod.Items
             void CharacterBody_OnBuffFirstStackGained(On.RoR2.CharacterBody.orig_OnBuffFirstStackGained orig, CharacterBody self, BuffDef buffDef)
             {
                 orig(self, buffDef);
-                if (self.inventory && self.inventory.GetItemCount(itemDef) > 0 && buffDef.name == "bdCripple")
+                if (self.inventory && self.inventory.GetItemCountPermanent(itemDef) > 0 && buffDef.name == "bdCripple")
                 {
                     self.RemoveBuff(buffDef);
                 }

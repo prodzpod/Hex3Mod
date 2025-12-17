@@ -47,7 +47,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.CannotDuplicate };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.CannotDuplicate, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier2);
             item.canRemove = true;
             item.hidden = false;
@@ -67,7 +67,7 @@ namespace Hex3Mod.Items
             item.pickupToken = "H3_" + upperName + "CONSUMED_PICKUP";
             item.descriptionToken = "H3_" + upperName + "CONSUMED_DESC";
 
-            item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotDuplicate, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist }; // Need to make sure the item can't be given or cloned
+            item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotDuplicate, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary }; // Need to make sure the item can't be given or cloned
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.NoTier, canScrap: false, canRestack: false);
             item.canRemove = false;
             item.hidden = false;
@@ -87,7 +87,7 @@ namespace Hex3Mod.Items
             item.pickupToken = "H3_" + upperName + "HIDDEN_NAME";
             item.descriptionToken = "H3_" + upperName + "HIDDEN_NAME";
 
-            item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotDuplicate, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist }; // Need to make sure the item can't be given or cloned
+            item.tags = new ItemTag[] { ItemTag.CannotCopy, ItemTag.CannotDuplicate, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary }; // Need to make sure the item can't be given or cloned
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.NoTier, canScrap: false, canRestack: false);
             item.canRemove = true;
             item.hidden = true;
@@ -381,12 +381,89 @@ namespace Hex3Mod.Items
             {
                 orig(self, itemIndex);
                 ValidateKeys();
-                if (self.GetItemCount(itemDef) > 0 && itemPairs.ContainsKey(ItemCatalog.GetItemDef(itemIndex).name)) // Should not call on itself, as it never adds consumed items
+
+                // Check if the item added is a consumed item that should trigger restoration
+                if (self.GetItemCountEffective(itemDef) > 0 && itemPairs.ContainsKey(ItemCatalog.GetItemDef(itemIndex).name))
+                {
+                    itemPairs.TryGetValue(ItemCatalog.GetItemDef(itemIndex).name, out string value);
+
+                    // Use 'masterRestoration' for the first transformation block
+                    if (ItemCatalog.FindItemIndex(value) != ItemIndex.None && self.gameObject.TryGetComponent(out CharacterMaster masterRestoration) && masterRestoration.GetBody())
+                    {
+                        ItemIndex consumedItemIndex = itemIndex;
+                        ItemIndex restoredItemIndex = ItemCatalog.FindItemIndex(value);
+
+                        // --- 1. Restoration Transformation (Fixes the GiveItem/RemoveItem issue) ---
+                        Inventory.ItemTransformation transformationRestore = new Inventory.ItemTransformation
+                        {
+                            originalItemIndex = consumedItemIndex,
+                            newItemIndex = restoredItemIndex
+                        };
+
+                        // TryTake removes one stack of the consumed item and stores its temporary data (if any)
+                        if (transformationRestore.TryTake(self, out Inventory.ItemTransformation.TakeResult takeResult))
+                        {
+                            // Give the restored item, applying the temporary status from the consumed item
+                            takeResult.GiveTakenItem(self, restoredItemIndex);
+
+                            Util.PlaySound(EntityStates.ScavMonster.FindItem.sound, masterRestoration.GetBody().gameObject); // Use masterRestoration
+                            EffectData effectData = new EffectData
+                            {
+                                origin = masterRestoration.GetBody().transform.position // Use masterRestoration
+                            };
+                            effectData.SetNetworkedObjectReference(masterRestoration.GetBody().gameObject); // Use masterRestoration
+                            EffectManager.SpawnEffect(HealthComponent.AssetReferences.crowbarImpactEffectPrefab, effectData, true);
+                            notificationsToClear++;
+
+                            self.GiveItemPermanent(hiddenItemDef); // Give the hidden stack tracker
+
+                            // --- 2. Final Pack Transformation ---
+                            if (self.GetItemCountEffective(hiddenItemDef) >= ScavengersPack_Uses.Value)
+                            {
+                                // Define the transformation from Usable Pack (itemDef) to Empty Pack (consumedItemDef)
+                                Inventory.ItemTransformation transformationPack = new Inventory.ItemTransformation
+                                {
+                                    originalItemIndex = itemDef.itemIndex,
+                                    newItemIndex = consumedItemDef.itemIndex
+                                };
+
+                                // We only remove and give ONE stack of the pack
+                                if (transformationPack.TryTake(self, out Inventory.ItemTransformation.TakeResult takeResultPack))
+                                {
+                                    self.RemoveItemPermanent(hiddenItemDef, ScavengersPack_Uses.Value);
+                                    takeResultPack.GiveTakenItem(self, consumedItemDef.itemIndex);
+
+                                    CharacterMasterNotificationQueue.PushItemTransformNotification(masterRestoration, itemDef.itemIndex, consumedItemDef.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default); // Use masterRestoration
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Use 'masterBuffUpdate' for the final buff update block
+                if (self.gameObject.TryGetComponent(out CharacterMaster masterBuffUpdate) && masterBuffUpdate.GetBody())
+                {
+                    if (self.GetItemCountEffective(itemDef) > 0)
+                    {
+                        masterBuffUpdate.GetBody().SetBuffCount(scavengerUses.buffIndex, ScavengersPack_Uses.Value - self.GetItemCountEffective(hiddenItemDef));
+                    }
+                    else
+                    {
+                        masterBuffUpdate.GetBody().SetBuffCount(scavengerUses.buffIndex, 0);
+                    }
+                }
+            }
+
+            /*void Inventory_RpcItemAdded(On.RoR2.Inventory.orig_RpcItemAdded orig, Inventory self, ItemIndex itemIndex)
+            {
+                orig(self, itemIndex);
+                ValidateKeys();
+                if (self.GetItemCountEffective(itemDef) > 0 && itemPairs.ContainsKey(ItemCatalog.GetItemDef(itemIndex).name)) // Should not call on itself, as it never adds consumed items
                 {
                     itemPairs.TryGetValue(ItemCatalog.GetItemDef(itemIndex).name, out string value);
                     if (ItemCatalog.FindItemIndex(value) != ItemIndex.None && self.gameObject.TryGetComponent(out CharacterMaster master) && master.GetBody())
                     {
-                        self.RemoveItem(itemIndex); // Restore 1 broken item
+                        /*self.RemoveItem(itemIndex); // Restore 1 broken item
                         self.GiveItemString(value);
 
                         Util.PlaySound(EntityStates.ScavMonster.FindItem.sound, master.GetBody().gameObject); // Play effects
@@ -400,28 +477,85 @@ namespace Hex3Mod.Items
 
                         self.GiveItem(hiddenItemDef);
 
-                        if (self.GetItemCount(hiddenItemDef) >= ScavengersPack_Uses.Value) // Give empty pack if uses over 3, reset hidden items
+                        if (self.GetItemCountEffective(hiddenItemDef) >= ScavengersPack_Uses.Value) // Give empty pack if uses over 3, reset hidden items
                         {
                             self.RemoveItem(itemDef);
                             self.RemoveItem(hiddenItemDef, ScavengersPack_Uses.Value);
                             self.GiveItem(consumedItemDef);
                             CharacterMasterNotificationQueue.PushItemTransformNotification(master, itemDef.itemIndex, consumedItemDef.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
                         }
+
+                        // Inside the 'if (ItemCatalog.FindItemIndex(value) != ItemIndex.None ...)' block
+
+                        ItemIndex consumedItemIndex = itemIndex; // The item that was just added (e.g., Broken Red Whip)
+                        ItemIndex restoredItemIndex = ItemCatalog.FindItemIndex(value); // The item to restore (e.g., Usable Red Whip)
+
+                        if (restoredItemIndex != ItemIndex.None && self.gameObject.TryGetComponent(out CharacterMaster master2) && master.GetBody())
+                        {
+                            // --- START: Item Transformation Logic ---
+
+                            Inventory.ItemTransformation transformationRestore = new Inventory.ItemTransformation
+                            {
+                                originalItemIndex = consumedItemIndex,
+                                newItemIndex = restoredItemIndex
+                            };
+
+                            // TryTake removes one stack of the consumed item and stores its temporary data (if any)
+                            if (transformationRestore.TryTake(self, out Inventory.ItemTransformation.TakeResult takeResult))
+                            {
+                                // Give the restored item, applying the temporary status from the consumed item
+                                takeResult.GiveTakenItem(self, restoredItemIndex);
+
+                                // --- END: Item Transformation Logic ---
+
+                                Util.PlaySound(EntityStates.ScavMonster.FindItem.sound, master2.GetBody().gameObject); // Play effects
+                                                                                                                      // ... (rest of the effects code remains the same)
+                                notificationsToClear++;
+
+                                self.GiveItemPermanent(hiddenItemDef); // Give the hidden stack tracker
+
+                                if (self.GetItemCountEffective(hiddenItemDef) >= ScavengersPack_Uses.Value) // Give empty pack if uses over 3, reset hidden items
+                                {
+                                    // --- START: Pack Transformation Logic ---
+
+                                    // Define the transformation from Usable Pack (itemDef) to Empty Pack (consumedItemDef)
+                                    Inventory.ItemTransformation transformationPack = new Inventory.ItemTransformation
+                                    {
+                                        originalItemIndex = itemDef.itemIndex,
+                                        newItemIndex = consumedItemDef.itemIndex
+                                    };
+
+                                    // We only remove and give ONE stack of the pack
+                                    if (transformationPack.TryTake(self, out Inventory.ItemTransformation.TakeResult takeResultPack))
+                                    {
+                                        // Manual removal of hidden item stacks (no transformation needed here)
+                                        self.RemoveItemPermanent(hiddenItemDef, ScavengersPack_Uses.Value);
+
+                                        // Give the consumed pack, preserving the temporary status of the original pack
+                                        takeResultPack.GiveTakenItem(self, consumedItemDef.itemIndex);
+
+                                        // --- END: Pack Transformation Logic ---
+
+                                        CharacterMasterNotificationQueue.PushItemTransformNotification(master2, itemDef.itemIndex, consumedItemDef.itemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
                 if (self.gameObject.TryGetComponent(out CharacterMaster master1) && master1.GetBody())
                 {
-                    if (self.GetItemCount(itemDef) > 0)
+                    if (self.GetItemCountEffective(itemDef) > 0)
                     {
-                        master1.GetBody().SetBuffCount(scavengerUses.buffIndex, ScavengersPack_Uses.Value - self.GetItemCount(hiddenItemDef));
+                        master1.GetBody().SetBuffCount(scavengerUses.buffIndex, ScavengersPack_Uses.Value - self.GetItemCountEffective(hiddenItemDef));
                     }
                     else
                     {
                         master1.GetBody().SetBuffCount(scavengerUses.buffIndex, 0);
                     }
                 }
-            }
+            }*/
 
             // Prevent consumable notifications
             void CharacterMasterNotificationQueue_PushItemTransformNotification(On.RoR2.CharacterMasterNotificationQueue.orig_PushItemTransformNotification orig, CharacterMaster characterMaster, ItemIndex oldIndex, ItemIndex newIndex, CharacterMasterNotificationQueue.TransformationType transformationType)

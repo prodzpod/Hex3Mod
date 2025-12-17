@@ -7,6 +7,9 @@ using System.Linq;
 using Hex3Mod.Utils;
 using static Hex3Mod.Main;
 using System;
+using EntityStates.AffixVoid;
+using System.Reflection;
+using Hex3Mod.Logging;
 
 namespace Hex3Mod.Items
 {
@@ -265,7 +268,19 @@ namespace Hex3Mod.Items
                 {
                     if (self.characterBody && self.characterBody.inventory && self.characterBody.master)
                     {
-                        int totalApplicableItemCount = self.characterBody.inventory.GetTotalItemCountOfTier(ItemTier.Tier1) + self.characterBody.inventory.GetTotalItemCountOfTier(ItemTier.Tier2) + self.characterBody.inventory.GetTotalItemCountOfTier(ItemTier.Tier3) + self.characterBody.inventory.GetTotalItemCountOfTier(ItemTier.VoidTier1) + self.characterBody.inventory.GetTotalItemCountOfTier(ItemTier.VoidTier2) + self.characterBody.inventory.GetTotalItemCountOfTier(ItemTier.VoidTier3);
+                        var totalApplicableItemCount = 0;
+                        Dictionary<ItemIndex, int> itemSelection = [];
+                        foreach (var item in ItemCatalog.allItemDefs)
+                        {
+                            if (
+                                item.tier == ItemTier.NoTier || item.tier == ItemTier.Lunar || item.tier == ItemTier.Boss || item.tier == ItemTier.VoidBoss
+                                || item.hidden || !item.inDroppableTier || !item.canRemove
+                                || item.name.Contains("Aspect") || item.name.Contains("Scrap") || item.name.Contains("EssenceOfTar") || item.name.Contains("RelicOfEnergy")) continue;
+                            var count = self.characterBody.inventory.effectiveItemStacks.GetStackValue(item.itemIndex);
+                            if (count <= 0) continue;
+                            totalApplicableItemCount += count;
+                            itemSelection.Add(item.itemIndex, count);
+                        }
                         if (totalApplicableItemCount >= BloodOfTheLamb_ItemsTaken.Value)
                         {
                             Util.PlaySound(EntityStates.ImpBossMonster.GroundPound.initialAttackSoundString, self.gameObject);
@@ -283,31 +298,24 @@ namespace Hex3Mod.Items
 
                             Util.ShuffleList(allItems, rng);
                             rng.Next(); // RNG shuffle
-
-                            foreach (ItemDef def in allItems) // Finds a random boss item to give (No aspects, scrap, artifact keys, Relic of Energy or Essence of Tar)
-                            {
-                                if (def.tier == ItemTier.Boss && def.name != RoR2Content.Items.ArtifactKey.name && !def.name.Contains("Aspect") && !def.name.Contains("Scrap") && !def.name.Contains("EssenceOfTar") && !def.name.Contains("RelicOfEnergy"))
-                                {
-                                    inventory.GiveItem(def);
-                                    givenItem = def.itemIndex;
-                                    break;
-                                }
-                            }
+                            var list = Run.instance.availableBossDropList.Where(index => {
+                                if (!index.isValid) return false;
+                                var index2 = index.pickupDef.itemIndex;
+                                if (index2 == ItemIndex.None) return false;
+                                var def = ItemCatalog.GetItemDef(index2);
+                                return def.name != RoR2Content.Items.ArtifactKey.name && !def.name.Contains("Aspect") && !def.name.Contains("Scrap") && !def.name.Contains("EssenceOfTar") && !def.name.Contains("RelicOfEnergy");
+                            }).ToList();
+                            givenItem = rng.NextElementUniform(list).pickupDef.itemIndex;
+                            inventory.GiveItemPermanent(ItemCatalog.GetItemDef(givenItem));
                             for (int i = 0; i < BloodOfTheLamb_ItemsTaken.Value; i++) // Takes random item each loop
                             {
-                                itemList = inventory.itemAcquisitionOrder;
-                                Util.ShuffleList(itemList, rng);
+                                var index = rng.NextElementUniform(itemSelection.Keys.ToList());
+                                if (inventory.GetItemCountTemp(index) > 0) inventory.RemoveItemTemp(index);
+                                else inventory.RemoveItemPermanent(index);
+                                itemSelection[index] -= 1;
+                                if (itemSelection[index] <= 0) itemSelection.Remove(index);
+                                CharacterMasterNotificationQueue.PushItemTransformNotification(self.characterBody.master, index, givenItem, CharacterMasterNotificationQueue.TransformationType.Default);
                                 rng.Next(); // RNG shuffle
-                                foreach (ItemIndex index in itemList) // Find first applicable item from shuffled list
-                                {
-                                    ItemDef def = ItemCatalog.GetItemDef(index);
-                                    if (def.tier == ItemTier.Tier1 || def.tier == ItemTier.Tier2 || def.tier == ItemTier.Tier3 || def.tier == ItemTier.VoidTier1 || def.tier == ItemTier.VoidTier2 || def.tier == ItemTier.VoidTier3)
-                                    {
-                                        inventory.RemoveItem(def);
-                                        CharacterMasterNotificationQueue.PushItemTransformNotification(self.characterBody.master, index, givenItem, CharacterMasterNotificationQueue.TransformationType.Default);
-                                        break;
-                                    }
-                                }
                             }
                             return true;
                         }

@@ -53,7 +53,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist }; // It would be useless on enemies
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary }; // It would be useless on enemies
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier1);
             item.canRemove = true;
             item.hidden = false;
@@ -276,10 +276,10 @@ namespace Hex3Mod.Items
                 {
                     return;
                 }
-                if (self.inventory && self.inventory.GetItemCount(itemDef) > 0)
+                if (self.inventory && self.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     Xoroshiro128Plus rng = new Xoroshiro128Plus(Run.instance.stageRng.nextUlong);
-                    int itemsLeft = self.inventory.GetItemCount(itemDef) * CorruptingParasite_ItemsPerStage.Value;
+                    int itemsLeft = self.inventory.GetItemCountEffective(itemDef) * CorruptingParasite_ItemsPerStage.Value;
                     List<ItemIndex> itemList = new List<ItemIndex>(self.inventory.itemAcquisitionOrder);
                     Util.ShuffleList(itemList, rng);
                     rng.Next();
@@ -298,8 +298,21 @@ namespace Hex3Mod.Items
                         {
                             if (pair.itemDef1 == ItemCatalog.GetItemDef(item))
                             {
-                                self.inventory.RemoveItem(item);
-                                self.inventory.GiveItem(pair.itemDef2);
+                                //self.inventory.RemoveItem(item);
+                                //self.inventory.GiveItem(pair.itemDef2);
+                                Inventory inventory = self.inventory;
+
+                                Inventory.ItemTransformation itemTransformation = new Inventory.ItemTransformation
+                                {
+                                    originalItemIndex = ItemCatalog.GetItemDef(item).itemIndex,
+                                    newItemIndex = ItemCatalog.GetItemDef(pair.itemDef2.itemIndex).itemIndex
+                                };
+
+                                if (itemTransformation.TryTake(inventory, out Inventory.ItemTransformation.TakeResult takeResult))
+                                {
+                                    takeResult.GiveTakenItem(inventory, itemTransformation.newItemIndex);
+                                }
+
                                 CharacterMasterNotificationQueue.PushItemTransformNotification(self, item, pair.itemDef2.itemIndex, CharacterMasterNotificationQueue.TransformationType.ContagiousVoid);
                                 itemsLeft--;
                                 break;

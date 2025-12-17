@@ -40,7 +40,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Damage, ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
+            item.tags = new ItemTag[]{ ItemTag.Damage, ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier2);
             item.canRemove = true;
             item.hidden = false;
@@ -256,20 +256,20 @@ namespace Hex3Mod.Items
         {
             void TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
             {
-                if (self.body && self.body.master && self.body.teamComponent && self.body.inventory && self.body.inventory.GetItemCount(itemDef) > 0)
+                if (self.body && self.body.master && self.body.teamComponent && self.body.inventory && self.body.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     CharacterBody body = self.body;
                     Inventory inventory = body.inventory;
-                    int itemCount = inventory.GetItemCount(itemDef);
+                    int itemCount = inventory.GetItemCountEffective(itemDef);
                     int shardCount = 0;
                     if (ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex("ShardOfGlass")) != null) // If shard is not present, nothing will be affected
                     {
-                        shardCount = inventory.GetItemCount(ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex("ShardOfGlass")));
+                        shardCount = inventory.GetItemCountEffective(ItemCatalog.GetItemDef(ItemCatalog.FindItemIndex("ShardOfGlass")));
                     }
 
                     if (damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody enemyBody) && enemyBody.teamComponent && body != enemyBody && body.teamComponent.teamIndex != enemyBody.teamComponent.teamIndex && damageInfo.damage > 0.1f && !damageInfo.procChainMask.HasProc(ProcType.Thorns))
                     {
-                        shardCount *= inventory.GetItemCount(itemDef); // Stacks of Scattered Reflection now strengthen the synergy
+                        shardCount *= inventory.GetItemCountEffective(itemDef); // Stacks of Scattered Reflection now strengthen the synergy
                         float totalReflectPercent = ScatteredReflection_DamageReflectPercent.Value + (shardCount * ScatteredReflection_DamageReflectShardStack.Value);
                         if (totalReflectPercent > 0.8f)
                         { 

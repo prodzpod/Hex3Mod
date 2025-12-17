@@ -39,7 +39,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
@@ -245,9 +245,9 @@ namespace Hex3Mod.Items
         {
             void GetStatCoefficients(CharacterBody body, RecalculateStatsAPI.StatHookEventArgs args)
             {
-                if (body.inventory && body.inventory.GetItemCount(itemDef) > 0)
+                if (body.inventory && body.inventory.GetItemCountEffective(itemDef) > 0)
                 {
-                    args.jumpPowerMultAdd += HopooEgg_JumpModifier.Value * body.inventory.GetItemCount(itemDef);
+                    args.jumpPowerMultAdd += HopooEgg_JumpModifier.Value * body.inventory.GetItemCountEffective(itemDef);
                 }
             }
 

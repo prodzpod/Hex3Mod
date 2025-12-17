@@ -47,7 +47,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.OnKillEffect, ItemTag.Damage };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.OnKillEffect, ItemTag.Damage, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier2);
             item.canRemove = true;
             item.hidden = false;
@@ -261,16 +261,16 @@ namespace Hex3Mod.Items
             void AddRemoveBehavior(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
             {
                 // Adds, destroys or updates stack of itembehavior if applicable
-                if (self.inventory && self.inventory.GetItemCount(itemDef) > 0)
+                if (self.inventory && self.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     if (self.TryGetComponent(out UnforgivableBehavior behavior) == false)
                     {
-                        self.AddItemBehavior<UnforgivableBehavior>(self.inventory.GetItemCount(itemDef));
+                        self.AddItemBehavior<UnforgivableBehavior>(self.inventory.GetItemCountEffective(itemDef));
                         self.GetComponent<UnforgivableBehavior>().killInterval = TheUnforgivable_Interval.Value;
                     }
                     else
                     {
-                        self.GetComponent<UnforgivableBehavior>().stack = self.inventory.GetItemCount(itemDef);
+                        self.GetComponent<UnforgivableBehavior>().stack = self.inventory.GetItemCountEffective(itemDef);
                     }
                 }
                 else

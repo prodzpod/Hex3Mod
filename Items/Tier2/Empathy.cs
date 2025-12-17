@@ -42,7 +42,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist }; // AI Blacklist for performance sake
+            item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary }; // AI Blacklist for performance sake
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier2);
             item.canRemove = true;
             item.hidden = false;
@@ -250,7 +250,7 @@ namespace Hex3Mod.Items
             void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
             {
                 orig(self);
-                if (self.inventory && self.inventory.GetItemCount(itemDef) > 0)
+                if (self.inventory && self.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     if (!self.GetComponent<EmpathyBehavior>())
                     {
@@ -259,7 +259,7 @@ namespace Hex3Mod.Items
                     int numberOfOverdrives = 0;
                     if (ItemCatalog.FindItemIndex("OverkillOverdrive") != ItemIndex.None)
                     {
-                        numberOfOverdrives = self.inventory.GetItemCount(ItemCatalog.FindItemIndex("OverkillOverdrive"));
+                        numberOfOverdrives = self.inventory.GetItemCountEffective(ItemCatalog.FindItemIndex("OverkillOverdrive"));
                     }
 
                     EmpathyBehavior behavior = self.GetComponent<EmpathyBehavior>();
@@ -268,7 +268,7 @@ namespace Hex3Mod.Items
                     behavior.focusCrystalSizeDivisor = Empathy_Radius.Value / 13f;
                     behavior.enable = true;
                 }
-                if (self.inventory && self.inventory.GetItemCount(itemDef) < 0 && self.GetComponent<EmpathyBehavior>())
+                if (self.inventory && self.inventory.GetItemCountEffective(itemDef) < 0 && self.GetComponent<EmpathyBehavior>())
                 {
                     UnityEngine.Object.Destroy(self.GetComponent<EmpathyBehavior>());
                 }
@@ -282,18 +282,18 @@ namespace Hex3Mod.Items
                     foreach (TeamComponent ally in TeamComponent.GetTeamMembers(TeamIndex.Player))
                     {
                         Vector3 enemyDistanceVector = Vector3.zero;
-                        if (ally.body && ally.body.inventory && ally.body.inventory.GetItemCount(itemDef) > 0 && ally.body.healthComponent)
+                        if (ally.body && ally.body.inventory && ally.body.inventory.GetItemCountEffective(itemDef) > 0 && ally.body.healthComponent)
                         {
                             int numberOfOverdrives = 0;
                             enemyDistanceVector = ally.body.corePosition - damageInfo.position;
 
                             if (ItemCatalog.FindItemIndex("OverkillOverdrive") != ItemIndex.None)
                             {
-                                numberOfOverdrives = ally.body.inventory.GetItemCount(ItemCatalog.FindItemIndex("OverkillOverdrive"));
+                                numberOfOverdrives = ally.body.inventory.GetItemCountEffective(ItemCatalog.FindItemIndex("OverkillOverdrive"));
                             }
                             if (enemyDistanceVector.sqrMagnitude <= (float)Math.Pow(Empathy_Radius.Value + (Empathy_Radius.Value * ((OverkillOverdrive_ZoneIncrease.Value / 100f) * numberOfOverdrives)), 2))
                             {
-                                ally.body.healthComponent.Heal((Empathy_HealthPerHit.Value * damageInfo.procCoefficient) * ally.body.inventory.GetItemCount(itemDef), new ProcChainMask());
+                                ally.body.healthComponent.Heal((Empathy_HealthPerHit.Value * damageInfo.procCoefficient) * ally.body.inventory.GetItemCountEffective(itemDef), new ProcChainMask());
                             }
                         }
                     }

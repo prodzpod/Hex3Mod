@@ -54,7 +54,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.BrotherBlacklist, ItemTag.AIBlacklist}; // Useless on monsters
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.BrotherBlacklist, ItemTag.AIBlacklist, ItemTag.CanBeTemporary}; // Useless on monsters
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
@@ -278,7 +278,7 @@ namespace Hex3Mod.Items
                 if (amount > 0 && master && master.GetBody())
                 {
                     CharacterBody body = master.GetBody();
-                    if (body.inventory && body.inventory.GetItemCount(itemDef) > 0)
+                    if (body.inventory && body.inventory.GetItemCountEffective(itemDef) > 0)
                     {
                         if (body.GetComponent<MinersHelmetBehavior>() == null)
                         {
@@ -287,10 +287,10 @@ namespace Hex3Mod.Items
                             body.GetComponent<MinersHelmetBehavior>().MinersHelmet_GoldPerProc = MinersHelmet_GoldPerProc.Value;
                         }
                         MinersHelmetBehavior behavior = body.GetComponent<MinersHelmetBehavior>();
-                        behavior.stack = body.inventory.GetItemCount(itemDef);
+                        behavior.stack = body.inventory.GetItemCountEffective(itemDef);
                         behavior.goldInventory += (int)amount;
                     }
-                    if (body.inventory && body.inventory.GetItemCount(itemDef) < 1 && body.GetComponent<MinersHelmetBehavior>() != null)
+                    if (body.inventory && body.inventory.GetItemCountEffective(itemDef) < 1 && body.GetComponent<MinersHelmetBehavior>() != null)
                     {
                         UnityEngine.Object.Destroy(body.GetComponent<MinersHelmetBehavior>());
                     }

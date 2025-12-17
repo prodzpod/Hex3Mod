@@ -41,7 +41,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Damage };
+            item.tags = new ItemTag[]{ ItemTag.Damage, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier1);
             item.canRemove = true;
             item.hidden = false;
@@ -255,24 +255,24 @@ namespace Hex3Mod.Items
             // Void transformation
             VoidTransformation.Add(itemDef, "ShardOfGlass");
 
-            On.RoR2.DotController.AddDot += (orig, self, attackerObject, duration, dotIndex, damageMultiplier, maxStacksFromAttacker, totalDamage, preUpgradeDotIndex) =>
+            On.RoR2.DotController.AddDot_GameObject_float_DotIndex_float_Nullable1_Nullable1_Nullable1 += (orig, self, attackerObject, duration, dotIndex, damageMultiplier, maxStacksFromAttacker, totalDamage, preUpgradeDotIndex) =>
             {
-                if (dotIndex == DotController.DotIndex.Blight && attackerObject && attackerObject.TryGetComponent(out CharacterBody body) && body.inventory && body.inventory.GetItemCount(itemDef) > 0)
+                if (dotIndex == DotController.DotIndex.Blight && attackerObject && attackerObject.TryGetComponent(out CharacterBody body) && body.inventory && body.inventory.GetItemCountEffective(itemDef) > 0)
                 {
-                    damageMultiplier += DropOfNecrosis_Damage.Value * body.inventory.GetItemCount(itemDef);
+                    damageMultiplier += DropOfNecrosis_Damage.Value * body.inventory.GetItemCountEffective(itemDef);
                 }
                 orig(self, attackerObject, duration, dotIndex, damageMultiplier, maxStacksFromAttacker, totalDamage, preUpgradeDotIndex);
             };
 
             On.RoR2.GlobalEventManager.OnHitEnemy += (orig, self, damageInfo, victim) =>
             {
-                if (damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody body1) && body1.inventory && body1.inventory.GetItemCount(itemDef) > 0)
+                if (damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody body1) && body1.inventory && body1.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     if (body1.master && damageInfo.dotIndex != DotController.DotIndex.Blight && damageInfo.attacker != victim)
                     {
                         if (damageInfo.damageType != DamageType.DoT && damageInfo.damageType != DamageType.FallDamage && damageInfo.damage > 0f)
                         {
-                            if (Util.CheckRoll((DropOfNecrosis_DotChance.Value * body1.inventory.GetItemCount(itemDef)) * damageInfo.procCoefficient, body1.master.luck))
+                            if (Util.CheckRoll((DropOfNecrosis_DotChance.Value * body1.inventory.GetItemCountEffective(itemDef)) * damageInfo.procCoefficient, body1.master.luck))
                             {
                                 InflictDotInfo inflictDotInfo = new InflictDotInfo
                                 {

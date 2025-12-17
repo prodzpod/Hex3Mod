@@ -41,7 +41,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
@@ -261,10 +261,10 @@ namespace Hex3Mod.Items
         {
             void TakeDamage(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo)
             {
-                if (self.body && damageInfo.damage > 0 && !damageInfo.rejected && self.body.inventory && self.body.inventory.GetItemCount(itemDef) > 0)
+                if (self.body && damageInfo.damage > 0 && !damageInfo.rejected && self.body.inventory && self.body.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     CharacterBody body = self.body;
-                    int itemCount = body.inventory.GetItemCount(itemDef);
+                    int itemCount = body.inventory.GetItemCountEffective(itemDef);
                     bool chanceAlreadySet = false;
                     float chance = 0f;
                     int slowDebuffCount = body.GetBuffCount(BuffCatalog.FindBuffIndex("bdBeetleJuice")) +

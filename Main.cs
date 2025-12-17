@@ -41,7 +41,7 @@ namespace Hex3Mod
     {
         public const string ModGuid = "com.Hex3.Hex3Mod";
         public const string ModName = "Hex3Mod";
-        public const string ModVer = "2.1.7";
+        public const string ModVer = "2.1.11";
 
         public static RoR2.ExpansionManagement.ExpansionDef Hex3ModExpansion;
 
@@ -205,7 +205,7 @@ namespace Hex3Mod
 
         public static Dictionary<ItemDef, string> VoidTransformation = [];
 
-        public static bool debugMode = true; // DISABLE BEFORE BUILD
+        public static bool debugMode = false; // DISABLE BEFORE BUILD
 
         public static AssetBundle MainAssets;
 
@@ -217,8 +217,6 @@ namespace Hex3Mod
             {"stubbed hopoo games/fx/opaque cloud remap", "shaders/fx/hgopaquecloudremap"},
             {"stubbed hopoo games/fx/distortion", "shaders/fx/hgdistortion"}
         };
-
-        public static ManualLogSource logger;
 
         public void Awake()
         {

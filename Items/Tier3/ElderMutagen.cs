@@ -49,7 +49,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist};
+            item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary};
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier3);
             item.canRemove = true;
             item.hidden = false;
@@ -277,7 +277,7 @@ namespace Hex3Mod.Items
                 orig(self, damageReport);
                 if (damageReport.attackerBody && damageReport.victimBody && damageReport.attackerBody.inventory && damageReport.attackerBody.master && damageReport.attackerBody.master.playerCharacterMasterController)
                 {
-                    if (damageReport.attackerBody.inventory.GetItemCount(itemDef) <= 0)
+                    if (damageReport.attackerBody.inventory.GetItemCountEffective(itemDef) <= 0)
                     {
                         if (damageReport.attackerBody.master.playerCharacterMasterController.gameObject.GetComponent<MutagenBehavior>())
                         {
@@ -303,7 +303,7 @@ namespace Hex3Mod.Items
                     }
                     else
                     {
-                        if (speciesDict[speciesName] < inventory.GetItemCount(itemDef))
+                        if (speciesDict[speciesName] < inventory.GetItemCountEffective(itemDef))
                         {
                             speciesDict[speciesName]++;
                             EffectManager.SimpleImpactEffect(HealthComponent.AssetReferences.permanentDebuffEffectPrefab, damageReport.attackerBody.corePosition, damageReport.attackerBody.corePosition, true);

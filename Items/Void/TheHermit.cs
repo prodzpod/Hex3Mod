@@ -46,7 +46,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Healing };
+            item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier3);
             item.canRemove = true;
             item.hidden = false;
@@ -281,9 +281,9 @@ namespace Hex3Mod.Items
                 orig(self, damageInfo);
                 if (self.body && self.body.inventory && damageInfo.damage > 0f && !damageInfo.rejected)
                 {
-                    if (self.body.inventory.GetItemCount(itemDef) > 0)
+                    if (self.body.inventory.GetItemCountEffective(itemDef) > 0)
                     {
-                        self.body.AddTimedBuff(hermitBuff, TheHermit_BuffDuration.Value * self.body.inventory.GetItemCount(itemDef));
+                        self.body.AddTimedBuff(hermitBuff, TheHermit_BuffDuration.Value * self.body.inventory.GetItemCountEffective(itemDef));
                     }
                     if (self.body.GetBuffCount(hermitBuff) > 0)
                     {

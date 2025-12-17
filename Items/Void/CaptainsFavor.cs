@@ -50,7 +50,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = [ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist];
+            item.tags = [ItemTag.Utility, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary];
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.VoidTier1);
             item.canRemove = true;
             item.hidden = false;
@@ -275,7 +275,7 @@ namespace Hex3Mod.Items
             {
                 orig(self);
                 if (!self.inventory) { return; }
-                int itemCount = self.inventory.GetItemCount(itemDef);
+                int itemCount = self.inventory.GetItemCountEffective(itemDef);
                 if (itemCount > 0 && self.master && self.master.playerCharacterMasterController)
                 {
                     VoidTicketsBehavior component;
@@ -317,7 +317,7 @@ namespace Hex3Mod.Items
                 orig(self, activator);
             }
 
-            void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
+            /*void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
             {
                 if (self.gameObject.GetComponent<PurchaseInteraction>())
                 {
@@ -330,6 +330,7 @@ namespace Hex3Mod.Items
                             for (int i = 0; i < self.dropCount; i++)
                             {
                                 PickupIndex[] generatedDrops = self.dropTable.GenerateUniqueDrops(3, self.rng);
+                                
                                 // Marked as deprecated but has no PickupCatalog variant :(
                                 var def = PickupCatalog.GetPickupDef(generatedDrops[0]);
                                 if (def.itemIndex != ItemIndex.None && ItemCatalog.GetItemDef(def.itemIndex).tier != ItemTier.NoTier) 
@@ -337,13 +338,69 @@ namespace Hex3Mod.Items
                                 else firstDropTier = ItemTier.Tier1;
                                 PickupDropletController.CreatePickupDroplet(new GenericPickupController.CreatePickupInfo
                                 {
-                                    pickerOptions = PickupPickerController.GenerateOptionsFromArray(generatedDrops),
+                                    pickerOptions = PickupPickerController.GenerateOptionsFromList(generatedDrops),
                                     prefabOverride = potentialPrefab,
                                     position = self.dropTransform.position,
                                     rotation = Quaternion.identity,
                                     pickupIndex = PickupCatalog.FindPickupIndex(firstDropTier)
                                 },
                                 self.dropTransform.position + Vector3.up * 1, Vector3.up * self.dropUpVelocityStrength + (Quaternion.AngleAxis(360 * i / self.dropCount, Vector3.up) * self.dropTransform.forward) * self.dropForwardVelocityStrength);
+                            }
+                            behavior.interactions.Remove(self.gameObject.GetComponent<PurchaseInteraction>());
+                            if (behavior.interactions.Count > 500) { behavior.interactions.Clear(); }
+                            behavior.usesLeft--;
+                            behavior.timesUsedThisStage++;
+                            behavior.body.SetBuffCount(captainsFavorBuff.buffIndex, behavior.usesLeft);
+
+                            EffectData effectData = new()
+                            {
+                                origin = self.transform.position
+                            };
+                            EffectManager.SpawnEffect(chestKillPrefab, effectData, false);
+                            Object.Destroy(self.gameObject);
+                            return;
+                        }
+                    }
+                }
+                orig(self);
+            }*/
+
+            void ChestBehavior_ItemDrop(On.RoR2.ChestBehavior.orig_ItemDrop orig, ChestBehavior self)
+            {
+                if (self.gameObject.GetComponent<PurchaseInteraction>())
+                {
+                    foreach (VoidTicketsBehavior behavior in Object.FindObjectsOfType<VoidTicketsBehavior>())
+                    {
+                        if (behavior && behavior.interactions.Contains(self.gameObject.GetComponent<PurchaseInteraction>()) && behavior.usesLeft > 0)
+                        {
+                            ItemTier firstDropTier;
+
+                            for (int i = 0; i < self.dropCount; i++)
+                            {
+                                List<UniquePickup> generatedDropsList = new List<UniquePickup>();
+                                self.dropTable.GenerateDistinctPickups(generatedDropsList, 3, self.rng, true);
+
+                                if (generatedDropsList.Count == 0) continue;
+
+                                PickupIndex firstDropIndex = generatedDropsList[0].pickupIndex;
+
+                                var def = PickupCatalog.GetPickupDef(firstDropIndex);
+
+                                if (def.itemIndex != ItemIndex.None && ItemCatalog.GetItemDef(def.itemIndex).tier != ItemTier.NoTier)
+                                    firstDropTier = ItemCatalog.GetItemDef(def.itemIndex).tier;
+                                else
+                                    firstDropTier = ItemTier.Tier1;
+
+                                PickupDropletController.CreatePickupDroplet(new GenericPickupController.CreatePickupInfo
+                                {
+                                    pickerOptions = PickupPickerController.GenerateOptionsFromList(generatedDropsList),
+                                    prefabOverride = potentialPrefab,
+                                    position = self.dropTransform.position,
+                                    rotation = Quaternion.identity,
+                                    pickupIndex = PickupCatalog.FindPickupIndex(firstDropTier)
+                                },
+                                self.dropTransform.position + Vector3.up * 1, Vector3.up * self.dropUpVelocityStrength + (Quaternion.AngleAxis(360 * i / self.dropCount, Vector3.up) * self.dropTransform.forward) * self.dropForwardVelocityStrength);
+
                             }
                             behavior.interactions.Remove(self.gameObject.GetComponent<PurchaseInteraction>());
                             if (behavior.interactions.Count > 500) { behavior.interactions.Clear(); }

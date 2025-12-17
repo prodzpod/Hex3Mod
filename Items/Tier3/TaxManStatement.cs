@@ -38,7 +38,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Damage, ItemTag.BrotherBlacklist, ItemTag.AIBlacklist }; // Way too annoying on monsters
+            item.tags = new ItemTag[]{ ItemTag.Damage, ItemTag.BrotherBlacklist, ItemTag.AIBlacklist, ItemTag.CanBeTemporary }; // Way too annoying on monsters
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier3);
             item.canRemove = true;
             item.hidden = false;

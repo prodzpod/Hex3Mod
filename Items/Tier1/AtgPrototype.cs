@@ -39,7 +39,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Damage };
+            item.tags = new ItemTag[]{ ItemTag.Damage, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier1);
             item.canRemove = true;
             item.hidden = false;
@@ -246,7 +246,7 @@ namespace Hex3Mod.Items
             On.RoR2.GlobalEventManager.OnHitEnemy += (orig, self, damageInfo, victim) =>
             {
                 orig(self, damageInfo, victim);
-                if (damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody) && attackerBody.inventory && attackerBody.inventory.GetItemCount(itemDef) > 0 && damageInfo.procCoefficient > 0f && !damageInfo.procChainMask.HasProc(ProcType.Missile) && !damageInfo.rejected && damageInfo.attacker != victim)
+                if (damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody) && attackerBody.inventory && attackerBody.inventory.GetItemCountEffective(itemDef) > 0 && damageInfo.procCoefficient > 0f && !damageInfo.procChainMask.HasProc(ProcType.Missile) && !damageInfo.rejected && damageInfo.attacker != victim)
                 {
                     if (attackerBody.GetBuffCount(atgCounter) == 0)
                     {
@@ -259,7 +259,7 @@ namespace Hex3Mod.Items
                     }
                     if (attackerBody.GetBuffCount(atgCounter) >= (AtgPrototype_HitRequirement.Value + 1))
                     {
-                        float damageCoefficient = AtgPrototype_Damage.Value * (float)attackerBody.inventory.GetItemCount(itemDef);
+                        float damageCoefficient = AtgPrototype_Damage.Value * (float)attackerBody.inventory.GetItemCountEffective(itemDef);
                         float missileDamage = Util.OnHitProcDamage(damageInfo.damage, attackerBody.damage, damageCoefficient);
                         MissileUtils.FireMissile(
                             attackerBody.corePosition,

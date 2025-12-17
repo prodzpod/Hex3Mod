@@ -51,7 +51,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.Damage, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
+            item.tags = new ItemTag[]{ ItemTag.Healing, ItemTag.Damage, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier3);
             item.canRemove = true;
             item.hidden = false;
@@ -280,7 +280,7 @@ namespace Hex3Mod.Items
             void CharacterBody_OnInventoryChanged(On.RoR2.CharacterBody.orig_OnInventoryChanged orig, CharacterBody self)
             {
                 orig(self);
-                if (self.inventory && self.inventory.GetItemCount(itemDef) > 0)
+                if (self.inventory && self.inventory.GetItemCountEffective(itemDef) > 0)
                 {
                     if (!self.GetComponent<ApathyBehavior>())
                     {
@@ -289,7 +289,7 @@ namespace Hex3Mod.Items
                     int numberOfOverdrives = 0;
                     if (ItemCatalog.FindItemIndex("OverkillOverdrive") != ItemIndex.None)
                     {
-                        numberOfOverdrives = self.inventory.GetItemCount(ItemCatalog.FindItemIndex("OverkillOverdrive"));
+                        numberOfOverdrives = self.inventory.GetItemCountEffective(ItemCatalog.FindItemIndex("OverkillOverdrive"));
                     }
 
                     ApathyBehavior behavior = self.GetComponent<ApathyBehavior>();
@@ -298,7 +298,7 @@ namespace Hex3Mod.Items
                     behavior.focusCrystalSizeDivisor = Apathy_Radius.Value / 13f;
                     behavior.enable = true;
                 }
-                if (self.inventory && self.inventory.GetItemCount(itemDef) <= 0 && self.GetComponent<ApathyBehavior>())
+                if (self.inventory && self.inventory.GetItemCountEffective(itemDef) <= 0 && self.GetComponent<ApathyBehavior>())
                 {
                     UnityEngine.Object.Destroy(self.GetComponent<ApathyBehavior>());
                     self.RemoveBuff(apathyStacks);
@@ -316,7 +316,7 @@ namespace Hex3Mod.Items
 
                     if (ItemCatalog.FindItemIndex("OverkillOverdrive") != ItemIndex.None)
                     {
-                        numberOfOverdrives = apathyOwner.body.inventory.GetItemCount(ItemCatalog.FindItemIndex("OverkillOverdrive"));
+                        numberOfOverdrives = apathyOwner.body.inventory.GetItemCountEffective(ItemCatalog.FindItemIndex("OverkillOverdrive"));
                     }
                     if (deathDistanceVector.sqrMagnitude <= (float)Math.Pow(Apathy_Radius.Value + (Apathy_Radius.Value * ((OverkillOverdrive_ZoneIncrease.Value / 100f) * numberOfOverdrives)), 2) && apathyOwner.body.GetBuffCount(apathyBuff) <= 0)
                     {
@@ -324,9 +324,9 @@ namespace Hex3Mod.Items
                         if (apathyOwner.body.GetBuffCount(apathyStacks) >= Apathy_RequiredKills.Value)
                         {
                             Util.PlaySound(EntityStates.ImpBossMonster.GroundPound.initialAttackSoundString, apathyOwner.body.gameObject);
-                            apathyOwner.body.AddTimedBuff(apathyBuff, Apathy_Duration.Value + (Apathy_Duration.Value * (apathyOwner.body.inventory.GetItemCount(itemDef) - 1)));
+                            apathyOwner.body.AddTimedBuff(apathyBuff, Apathy_Duration.Value + (Apathy_Duration.Value * (apathyOwner.body.inventory.GetItemCountEffective(itemDef) - 1)));
                             apathyOwner.body.SetBuffCount(apathyStacks.buffIndex, 0);
-                            apathyOwner.currentBuffDuration = Apathy_Duration.Value + (Apathy_Duration.Value * (apathyOwner.body.inventory.GetItemCount(itemDef) - 1));
+                            apathyOwner.currentBuffDuration = Apathy_Duration.Value + (Apathy_Duration.Value * (apathyOwner.body.inventory.GetItemCountEffective(itemDef) - 1));
                             apathyOwner.body.RecalculateStats();
                         }
                     }

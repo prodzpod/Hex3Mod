@@ -39,7 +39,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier3);
             item.canRemove = true;
             item.hidden = false;
@@ -259,7 +259,7 @@ namespace Hex3Mod.Items
             {
                 if (body && body.inventory)
                 {
-                    int itemCount = body.inventory.GetItemCount(itemDef);
+                    int itemCount = body.inventory.GetItemCountEffective(itemDef);
                     if (itemCount > 0)
                     {
                         body.maxJumpCount += MintCondition_AddJumps.Value + (MintCondition_AddJumpsStack.Value * (itemCount - 1));
@@ -271,7 +271,7 @@ namespace Hex3Mod.Items
             {
                 if (body && body.inventory)
                 {
-                    int itemCount = body.inventory.GetItemCount(itemDef);
+                    int itemCount = body.inventory.GetItemCountEffective(itemDef);
                     if (itemCount > 0)
                     {
                         args.moveSpeedMultAdd += (MintCondition_MoveSpeed.Value + (MintCondition_MoveSpeedStack.Value * (itemCount - 1)));
@@ -283,7 +283,7 @@ namespace Hex3Mod.Items
             {
                 if (damageReport.victim && damageReport.victim.body && damageReport.victim.body.inventory)
                 {
-                    int itemCount = damageReport.victim.body.inventory.GetItemCount(itemDef);
+                    int itemCount = damageReport.victim.body.inventory.GetItemCountEffective(itemDef);
                     if (itemCount > 0 && damageReport.damageInfo != null)
                     {
                         SetStateOnHurt component = damageReport.victim.body.GetComponent<SetStateOnHurt>();
@@ -300,7 +300,7 @@ namespace Hex3Mod.Items
             {
                 if (body && body.master && body.inventory)
                 {
-                    int itemCount = body.inventory.GetItemCount(itemDef); // Now, for a looong list of all the movement-restricting buffs I could find...
+                    int itemCount = body.inventory.GetItemCountEffective(itemDef); // Now, for a looong list of all the movement-restricting buffs I could find...
                     if (itemCount > 0)
                     {
                         if (receivedBuff.name == "bdBeetleJuice" || receivedBuff.name == "bdClayGoo" || receivedBuff.name == "bdCripple" || receivedBuff.name == "bdNullified" || receivedBuff.name == "bdNullifyStack" || receivedBuff.name == "bdSlow50" || receivedBuff.name == "bdSlow60" || receivedBuff.name == "bdSlow80" || receivedBuff.name == "bdWeak" || receivedBuff.name == "bdLunarSecondaryRoot" || receivedBuff.name == "bdEntangle" || receivedBuff.name == "bdJailerSlow" || receivedBuff.name == "bdJailerTether" || receivedBuff.name == "bdSlow30")

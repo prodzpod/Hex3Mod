@@ -50,7 +50,7 @@ namespace Hex3Mod.Items
             item.descriptionToken = "H3_" + upperName + "_DESC";
             item.loreToken = "H3_" + upperName + "_LORE";
 
-            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.HoldoutZoneRelated, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist };
+            item.tags = new ItemTag[]{ ItemTag.Utility, ItemTag.HoldoutZoneRelated, ItemTag.AIBlacklist, ItemTag.BrotherBlacklist, ItemTag.CanBeTemporary };
             item._itemTierDef = helpers.GenerateItemDef(ItemTier.Tier2);
             item.canRemove = true;
             item.hidden = false;
@@ -269,7 +269,7 @@ namespace Hex3Mod.Items
                     }
                     if (ally.body && ally.body.inventory)
                     {
-                        totalItemAmount += ally.body.inventory.GetItemCount(itemDef);
+                        totalItemAmount += ally.body.inventory.GetItemCountEffective(itemDef);
                     }
                 }
                 return totalItemAmount * (OverkillOverdrive_ZoneIncrease.Value / 100f);

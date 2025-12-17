@@ -59,9 +59,22 @@ KNOWN ISSUES:
 * Overkill Overdrive's incompatibility with certain mods. I'd prefer a way to have it modify Focus Crystal and Bustling Fungus non-destructively.
 * Corrupting Parasite can be found without the achievement. Not sure why this is happening.
 
-Please give feedback/bug reports on the RoR2 Modding discord, or by messaging directly: hex3#7952
+Please give feedback/bug reports on the RoR2 Modding discord, or by messaging directly: @pr_d
 
 # Changelog
+
+### 2.1.11
+fixed blood of the lamb error
+
+### 2.1.10
+made to work with AC (again)
+
+### 2.1.9
+fixed captain's favor not working
+
+### 2.1.8
+Phreel made the mod work with DLC3 (yay !)
+all items can be temporary, go ham with temporary scav pouch lol
 
 ### 2.1.7
 doesnt crash if you config badly
